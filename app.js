@@ -8,6 +8,7 @@ const tweets = require("./routes/api/tweets");
 
 const User = require("./models/User");
 const bodyParser = require("body-parser");
+const passport = require("passport")
 
 mongoose
     .connect(db, { useNewUrlParser: true, useUnifiedTopology: true })
@@ -22,15 +23,8 @@ app.use(bodyParser.urlencoded({
 app.use(bodyParser.json());
 
 
-app.get("/", (req, res) => {
-    const user = new User({
-        handle: 'jasmine',
-        email: 'jasmine@gmail.com',
-        password: 'jasmine123'
-    })
-    user.save()
-    res.send("Hello a/A");
-})
+app.use(passport.initialize());
+require('./config/passport')(passport);
 
 app.use("/api/users", users)
 app.use("/api/tweets", tweets)
